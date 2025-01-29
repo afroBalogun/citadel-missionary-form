@@ -180,7 +180,7 @@ export default function Form() {
                 ) : (
                     <div className="h-[300px] flex items-center flex-col justify-center gap-2">
                         <FaLocationDot className="location-icon text-3xl"/>
-                        <p className="">
+                        <p className="text-sm w-[250px] text-center">
                             You are not at the required location to fill out this form.
                         </p>
                     </div>

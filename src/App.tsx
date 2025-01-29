@@ -6,12 +6,12 @@ import Nav from "./components/Nav";
 
 
 export default function App(){
-    return (
-        <div>
+    return(
+        <div className="min-h-screen">
             <Header />
             <Nav />
-            <Form/>
-            <Footer/>
+            <Form />
+            <Footer />
         </div>
     )
 }
