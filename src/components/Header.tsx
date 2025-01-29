@@ -25,7 +25,7 @@ export default function Header(){
        </div>
 
        <div>
-           <CiSearch className="hover:cursor-pointer text-sm max-[500px]:text-xs"/>
+           <CiSearch className="hover:cursor-pointer text-sm max-[500px]:hidden"/>
        </div>
    </header>
     )

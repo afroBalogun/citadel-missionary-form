@@ -12,7 +12,7 @@ export default function Form() {
                 const targetLatitude = 6.59479609002876;
                 const targetLongitude = 3.370229737879516;
                 const distance = getDistanceFromLatLonInKm(latitude, longitude, targetLatitude, targetLongitude);
-                if (distance < 0.1) { // Adjust the threshold as needed
+                if (distance < 0.5) { // Adjust the threshold as needed
                     setIsLocationValid(true);
                 }
             });
@@ -178,7 +178,7 @@ export default function Form() {
                         <button type="submit" className="bg-[#DCA628] p-3 text-white rounded-3xl mt-4 hover:cursor-pointer hover:scale-110 font-semibold transition-all duration-200">Submit</button>
                     </form>
                 ) : (
-                    <div className="h-[300px] flex items-center flex-col justify-center gap-2">
+                    <div className="mt-20 flex items-center flex-col justify-center gap-2">
                         <FaLocationDot className="location-icon text-3xl"/>
                         <p className="text-sm w-[250px] text-center">
                             You are not at the required location to fill out this form.
