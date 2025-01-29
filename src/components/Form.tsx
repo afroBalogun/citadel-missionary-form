@@ -12,7 +12,7 @@ export default function Form() {
                 const targetLatitude = 6.59479609002876;
                 const targetLongitude = 3.370229737879516;
                 const distance = getDistanceFromLatLonInKm(latitude, longitude, targetLatitude, targetLongitude);
-                if (distance < 0.5) { // Adjust the threshold as needed
+                if (distance < 10) { // Adjust the threshold as needed
                     setIsLocationValid(true);
                 }
             });
