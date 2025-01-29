@@ -4,8 +4,8 @@ import { PiEnvelopeSimpleOpenThin } from "react-icons/pi";
 
 export default function Header(){
     return (
-        <header className="flex justify-between items-center p-2 text-xs text-white bg-[#DCA628] transition-all duration-200
-        md:px-20
+        <header className="flex justify-between items-center py-2 px-1 text-xs text-white bg-[#DCA628] transition-all duration-200
+        md:px-20 
         max-[500px]:text-[.6em]
    ">
        <div className="flex gap-4">
