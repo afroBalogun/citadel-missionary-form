@@ -2,17 +2,27 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaLocationDot } from "react-icons/fa6";
 
-export default function Form() {
-    const [isLocationValid, setIsLocationValid] = useState(false);
+interface FormProps {
+
+    isLocationValid: boolean;
+
+    setIsLocationValid: React.Dispatch<React.SetStateAction<boolean>>;
+
+    additionalDepartments: string[];
+}
+
+const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
+    const MAX_DISTANCE_KM = 1.5; // Set to your preferred radius
+
 
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
                 const { latitude, longitude } = position.coords;
-                const targetLatitude = 6.59479609002876;
-                const targetLongitude = 3.370229737879516;
+                const targetLatitude = 6.594790761117772;
+                const targetLongitude = 3.3702726519588877;
                 const distance = getDistanceFromLatLonInKm(latitude, longitude, targetLatitude, targetLongitude);
-                if (distance < 20) { // Adjust the threshold as needed
+                if (distance < MAX_DISTANCE_KM) {
                     setIsLocationValid(true);
                 }
             });
@@ -61,6 +71,7 @@ export default function Form() {
         "M.E.R.I.T.T",
         "Economic Empowerment"
     ];
+    
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     interface FormData {
@@ -79,18 +90,18 @@ export default function Form() {
                 md:items-start md:w-full md:px-[80px] md:bg-amber-100 md:h-[200px]
                 max-[500px]:h-[100px] max-[500px]:gap-1 max-[500px]:mb-5
 
-            ">
+            " style={{backgroundImage: "url(static/images/praise.jpg)"}}>
                 <h3 className="text-[#DCA628] text-sm">
                     Missionary Force
                 </h3>
-                <h2 className="text-3xl text-[#656464] font-semibold md:text-4xl">
+                <h2 className="text-3xl text-[#f5f4f4] font-semibold md:text-4xl">
                     Attendance Forms  
                 </h2>
             </div>
             
             {
                 isLocationValid ? (
-                    <form onSubmit={handleSubmit(onSubmit)} className="w-3/5 flex flex-col px-5 gap-2 text-xs md:text-sm md:mt-10">
+                    <form onSubmit={handleSubmit(onSubmit)} className="w-4/5 flex flex-col px-5 gap-2 text-xs md:text-sm md:mt-10 md:w-3/5">
                         {/* First Name */}
                         <label htmlFor="firstName" className="font-semibold">First Name</label>
                         <input 
@@ -122,12 +133,15 @@ export default function Form() {
                             {...register("department", { required: true })}
                         >
                             <option value="">Select Your Department</option>
-                            {departments.map((department) => (
+                            {departments.sort().map((department) => (
                                 <option key={department} value={department}>{department}</option>
                             ))}
                         </select>
                         {errors.department && <span className="text-red-500">Department is required</span>}
+
+                        {/* Additional Departments */}
                         
+
                         <div className="flex flex-col gap-4 md:flex-row">
                             {/* Date */}
                             <div className="date flex gap-2 flex-col md:w-2/5">
@@ -190,3 +204,5 @@ export default function Form() {
         </main>
     );
 }
+
+export default Form;
