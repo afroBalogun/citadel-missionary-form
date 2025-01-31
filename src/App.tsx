@@ -15,7 +15,8 @@ export default function App(){
             <Nav />
             <Form 
                 isLocationValid = {isLocationValid}
-                setIsLocationValid = {setIsLocationValid} 
+                setIsLocationValid = {setIsLocationValid}
+                additionalDepartments = {[]} 
             />
             <Footer 
                 isLocationValid = {isLocationValid}
