@@ -84,17 +84,19 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
 
     const onSubmit = (data: FormData) => console.log(data);
 
+    const pageWidth = window.innerWidth
+
     return (
         <main className="form place-items-center mb-10">
             <div className="text-center h-[150px] flex flex-col justify-center items-center gap-2 transition-all duration-200
                 md:items-start md:w-full md:px-[80px] md:bg-amber-100 md:h-[200px]
                 max-[500px]:h-[100px] max-[500px]:gap-1 max-[500px]:mb-5
 
-            " style={{backgroundImage: "url(static/images/praise.jpg)"}}>
+            " style={{backgroundImage: pageWidth > 768 ? "url(static/images/praise.jpg)" : "none"}}>
                 <h3 className="text-[#DCA628] text-sm">
                     Missionary Force
                 </h3>
-                <h2 className="text-3xl text-[#f5f4f4] font-semibold md:text-4xl">
+                <h2 className="text-3xl text-[#959595] font-semibold md:text-4xl">
                     Attendance Forms  
                 </h2>
             </div>
@@ -134,7 +136,7 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
                         >
                             <option value="">Select Your Department</option>
                             {departments.sort().map((department) => (
-                                <option key={department} value={department}>{department}</option>
+                                <option key={department} value={department} className="capitalize">{department}</option>
                             ))}
                         </select>
                         {errors.department && <span className="text-red-500">Department is required</span>}

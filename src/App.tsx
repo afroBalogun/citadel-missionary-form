@@ -7,7 +7,7 @@ import Nav from "./components/Nav";
 
 
 export default function App(){
-    const [isLocationValid, setIsLocationValid] = useState(true);
+    const [isLocationValid, setIsLocationValid] = useState(false);
 
     return(
         <div className="min-h-screen">
