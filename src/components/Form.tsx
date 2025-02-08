@@ -12,7 +12,7 @@ interface FormProps {
 }
 
 const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
-    const MAX_DISTANCE_KM = 1.5; // Set to your preferred radius
+    const MAX_DISTANCE_KM = 0.5; // Set to your preferred radius
 
 
     useEffect(() => {
