@@ -90,6 +90,12 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
               });
         } catch (error) {
             console.error("Error submitting attendance:", error);
+            Swal.fire({
+                title: `Oops! Something went wrong. `,
+                text: "There was an error registering your attendance. Please try again.",
+                icon: "error",
+                draggable: false
+              });
         }
     };
 
