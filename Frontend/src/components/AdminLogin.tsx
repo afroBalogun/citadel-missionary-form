@@ -11,7 +11,7 @@ interface LoginForm {
 }
 
 export default function AdminLogin(){
-    const { register, handleSubmit, formState: { errors } } = useForm<{ username: string; password: string }>();
+    const { register, handleSubmit} = useForm<{ username: string; password: string }>();
     const [loginAdmin] = useLoginAdminMutation();
     const navigate = useNavigate();
 

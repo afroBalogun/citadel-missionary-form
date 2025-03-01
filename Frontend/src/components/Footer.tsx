@@ -7,9 +7,6 @@ interface Props {
 const Footer: React.FC<Props> = ({ isLocationValid }) => {
     const year = new Date().getFullYear()
 
-    const pageHeight = window.innerHeight
-
-
     return (
         <footer className={`${isLocationValid ? "" : "absolute bottom-0"} w-full flex justify-center p-2  transition-all duration-200 mt-16`}
             style={{backgroundImage: "url(static/images/praise.jpg)"}}
