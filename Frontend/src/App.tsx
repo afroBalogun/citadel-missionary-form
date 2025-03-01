@@ -7,7 +7,7 @@ import Nav from "./components/Nav";
 
 
 export default function App(){
-    const [isLocationValid, setIsLocationValid] = useState(false);
+    const [isLocationValid, setIsLocationValid] = useState(true);
 
     return(
         <div className="flex flex-col min-h-screen">

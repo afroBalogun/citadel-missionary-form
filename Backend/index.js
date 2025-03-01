@@ -11,7 +11,7 @@ app.use(express.json());
 
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://your-frontend-domain.vercel.app"
+    "https://citadel-missionary-form.vercel.app"
 ];
 
 app.use(cors({
