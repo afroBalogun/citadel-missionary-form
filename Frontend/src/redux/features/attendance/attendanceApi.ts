@@ -6,8 +6,7 @@ export interface Attendance {
     id: string;
     firstName: string;
     lastName: string;
-    department: string;
-    additionalDepartments?: string[];
+    department: string[];
     date: string;
     gender: 'male' | 'female';
 }
