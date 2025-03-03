@@ -26,7 +26,7 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
 
     // Add Attendance to DB function
     const [addAttendance] = useAddAttendanceMutation();
-    const [message, setMessage] = useState<string | null>(null); 
+    // const [message, setMessage] = useState<string | null>(null); 
 
     useEffect(() => {
         if (navigator.geolocation) {
