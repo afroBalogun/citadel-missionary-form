@@ -118,7 +118,7 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
     }, [isLocationValid, locationChecked]); 
 
     return (
-        <main className="form place-items-center mb-10 flex-grow">
+        <main className="form flex  flex-col justify-center items-center mb-10 flex-grow">
             <div className="text-center h-[150px] flex flex-col justify-center items-center gap-2 transition-all duration-200
                 md:items-start md:w-full md:px-[80px] md:h-[200px] md:bg-[url(/images/praise.jpg)] md:bg-cover
                 max-[500px]:h-[100px] max-[500px]:gap-1 max-[500px]:mb-5
