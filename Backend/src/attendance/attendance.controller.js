@@ -2,15 +2,26 @@ const Attendance = require("./attendance.model");
 
 const postAttendance = async (req, res) => {
     try {
-        const newAttendance = await Attendance(req.body);
+        const { firstName, lastName, department } = req.body;
+
+        // Check if an attendance record already exists for the same person in the same department
+        const existingAttendance = await Attendance.findOne({ firstName, lastName, department });
+
+        if (existingAttendance) {
+            return res.status(400).json({ message: "Attendance already recorded for this person in this department" });
+        }
+
+        // If no duplicate found, proceed to save attendance
+        const newAttendance = new Attendance(req.body);
         const submitAttendance = await newAttendance.save();
 
         res.status(201).json({ message: "Attendance submitted successfully", data: submitAttendance });
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ message: "Error submiting attendance", error });
+        console.error("Error submitting attendance:", error);
+        res.status(500).json({ message: "Error submitting attendance", error });
     }
-}
+};
+
 
 const getAllAttendance = async (req, res) => {
     try {

@@ -12,12 +12,9 @@ const AttendanceSchema = new mongoose.Schema({
         required: true
         },
     department: {
-        type: String,
-        required: true,
-    },
-    additionalDepartments: {
         type: [String], 
-        default: []
+        default: [],
+        required: true
     },
     date: {
         type: Date,

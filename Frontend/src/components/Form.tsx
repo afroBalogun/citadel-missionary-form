@@ -17,8 +17,8 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
     const MAX_DISTANCE_KM = 0.5; 
     const [locationChecked, setLocationChecked] = useState(false);
 
-    // Initialized state for selectedAdditionalDepartments and showAdditionalDepartments
-    const [selectedAdditionalDepartments, setSelectedAdditionalDepartments] = useState<string[]>([]);
+    // Initialized state for selectedDepartments and showDepartments
+    const [selectedDepartments, setSelectedDepartments] = useState<string[]>([]);
     const [showAdditionalDepartments, setShowAdditionalDepartments] = useState<boolean>(false)
 
     // Defined useForm modules to handle form data submission
@@ -26,6 +26,7 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
 
     // Add Attendance to DB function
     const [addAttendance] = useAddAttendanceMutation();
+    const [message, setMessage] = useState<string | null>(null); 
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -75,29 +76,38 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
     const onSubmit = async (data: Attendance) => {
         const formDataWithAdditional = {
             ...data,
-            additionalDepartments: selectedAdditionalDepartments, 
+            department: selectedDepartments, 
         };
+    
         console.log(formDataWithAdditional);
-
+    
         try {
             await addAttendance(formDataWithAdditional).unwrap();
+            
             // Ensure the first letter of the first name is uppercase
             const formattedFirstName = data.firstName.charAt(0).toUpperCase() + data.firstName.slice(1);
+    
             Swal.fire({
                 title: `${formattedFirstName}, your attendance has been recorded!`,
                 icon: "success",
                 draggable: false
-              });
-        } catch (error) {
+            });
+    
+        } catch (error: any) {
             console.error("Error submitting attendance:", error);
+    
+            // Check if the error is due to a duplicate entry (400 status)
+            const errorMessage = error.data?.message || "There was an error registering your attendance. Please try again.";
+    
             Swal.fire({
-                title: `Oops! Something went wrong. `,
-                text: "There was an error registering your attendance. Please try again.",
+                title: "Oops! Something went wrong.",
+                text: errorMessage, // Show the actual error message
                 icon: "error",
                 draggable: false
-              });
+            });
         }
     };
+    
 
     // Don't make the additional departments options visible if not needed
     const toggleVisibility = () => {
@@ -116,6 +126,7 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
             });
         }
     }, [isLocationValid, locationChecked]); 
+
 
     return (
         <main className="form flex  flex-col justify-center items-center mb-10 flex-grow">
@@ -157,24 +168,10 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
                         />
                         {errors.lastName && <span className="text-red-500">Last name is required</span>}
                         
-                        {/* Department */}
-                        <label htmlFor="department" className="font-semibold">Department</label>
-                        <select 
-                            id="department" 
-                            title="Department" 
-                            className="bg-gray-100 py-2 p-8 pl-4 rounded-2xl outline-0 hover:cursor-pointer transition-all duration-200 appearance-none"
-                            {...register("department", { required: true })}
-                        >
-                            <option value="">Select Your Department</option>
-                            {departments.sort().map((department) => (
-                                <option key={department} value={department} className="capitalize">{department}</option>
-                            ))}
-                        </select>
-                        {errors.department && <span className="text-red-500">Department is required</span>}
 
-                        {/* Additional Departments Multi-Select */}
+                        {/* Departments Multi-Select */}
                         <div className="flex justify-between items-center mt-4 transition-all duration-200">
-                            <label htmlFor="additionalDepartments" className="font-semibold">Additional Departments (Optional)</label>
+                            <label htmlFor="additionalDepartments" className="font-semibold">Department(s)</label>
                             <div className="hover:cursor-pointer flex items-center transition-all duration-200" onClick={() => toggleVisibility()}>
                                 {
                                     showAdditionalDepartments ? <FaMinus className="transition-all duration-200"/> : <FaPlus className="transition-all duration-200"/>
@@ -189,10 +186,10 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
                                         type="checkbox" 
                                         id={department} 
                                         value={department}
-                                        checked={selectedAdditionalDepartments.includes(department)}
+                                        checked={selectedDepartments.includes(department)}
                                         onChange={(e) => {
                                             const value = e.target.value;
-                                            setSelectedAdditionalDepartments(prev =>
+                                            setSelectedDepartments(prev =>
                                                 prev.includes(value)
                                                     ? prev.filter((dep) => dep !== value) // Remove if unchecked
                                                     : [...prev, value] // Add if checked
@@ -208,12 +205,13 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
                         <div className="flex flex-col gap-4 md:flex-row">
                             {/* Date */}
                             <div className="date flex gap-2 flex-col md:w-2/5">
-                                <label htmlFor="dateIn" className="font-semibold">Date In</label>
+                                <label htmlFor="date" className="font-semibold">Date</label>
                                 <input 
-                                    id="dateIn" 
+                                    id="date" 
                                     type="date" 
-                                    placeholder="DD/MM/YYYY" 
-                                    className="bg-gray-100 px-4 py-2 rounded-2xl outline-0 transition-all duration-200 hover:cursor-pointer"
+                                    value={new Date().toISOString().split('T')[0]} 
+                                    readOnly
+                                    className="bg-gray-100 px-4 py-2 rounded-2xl outline-0 transition-all duration-200"
                                     {...register("date", { required: true })}
                                 />
                                 {errors.date && <span className="text-red-500">Date is required</span>}
