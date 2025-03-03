@@ -184,7 +184,7 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
                             
                         </div>
                         <div className={`${showAdditionalDepartments ? "" : ""}bg-gray-100 p-4 rounded-2xl hover:cursor-`}>
-                            {departments.map((department) => (
+                            {departments.sort().map((department) => (
                                 <div key={department} className={`${showAdditionalDepartments ? "" : "hidden"} flex gap-2 items-center`}>
                                     <input 
                                         type="checkbox" 
