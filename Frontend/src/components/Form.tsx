@@ -5,6 +5,7 @@ import { FaPlus, FaMinus  } from "react-icons/fa6";
 import { Attendance, useAddAttendanceMutation } from "../redux/features/attendance/attendanceApi";
 import Swal from "sweetalert2";
 import getDistanceFromLatLonInKm from "../utils/getDistanceFromLocation";
+import { useNavigate } from "react-router";
 
 interface FormProps {
     isLocationValid: boolean;
@@ -71,6 +72,8 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
         "M.E.R.I.T.T",
         "Economic Empowerment"
     ];
+
+    const navigate = useNavigate();
     
     // Submit Form
     const onSubmit = async (data: Attendance) => {
@@ -92,6 +95,7 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
                 icon: "success",
                 draggable: false
             });
+            navigate("/")
     
         } catch (error: any) {
             console.error("Error submitting attendance:", error);
