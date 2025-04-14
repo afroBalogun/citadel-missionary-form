@@ -31,7 +31,7 @@ export default function CheckInOut() {
     return (
         <div className="flex justify-center items-center flex-grow ">
             <div className="hidden md:flex justify-center items-center">
-                <QRCode value="http://localhost:5173/check-in-out" className="mb-4 w-[100px] h-[100px] md:w-[200px] md:h-[200px]" />
+                <QRCode value="https://citadel-missionary-form.vercel.app/check-in-out" className="mb-4 w-[100px] h-[100px] md:w-[200px] md:h-[200px]" />
             </div>
             <div className="flex flex-col items-center gap-2 md:gap-4 justify-center w-full md:w-1/2 p-4 bg-white rounded-lg shadow-md md:shadow-none md:rounded-none">
                 <h2 className="text-2xl md:text-3xl text-center w-98 md:w-[600px] font-inter font-extrabold text-gray-900">

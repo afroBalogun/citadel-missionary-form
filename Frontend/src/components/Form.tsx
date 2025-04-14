@@ -70,6 +70,12 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
                 // Refresh the page after user closes the success alert
                 // window.location.reload();
                 reset()
+
+                // Reset the selectedDepartments state
+                setSelectedDepartments([]);
+                
+                // Optionally reset the visibility of the departments section
+                setShowAdditionalDepartments(false);
             });
         } catch (error: any) {
             console.error("Error submitting attendance:", error);

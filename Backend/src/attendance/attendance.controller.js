@@ -4,8 +4,8 @@ const postAttendance = async (req, res) => {
     try {
         const { firstName, lastName, department, date, phoneNumber } = req.body;
 
-        // Check if an attendance record already exists for the same person in the same department
-        const existingAttendance = await Attendance.findOne({ date, phoneNumber, department });
+        // Check if an attendance record already exists for the same person.
+        const existingAttendance = await Attendance.findOne({ date, phoneNumber });
 
         if (existingAttendance) {
             return res.status(400).json({ message: "Attendance already recorded for this person in this department" });

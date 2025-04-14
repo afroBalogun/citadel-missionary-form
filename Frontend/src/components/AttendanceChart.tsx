@@ -112,11 +112,11 @@ export default function AttendanceChart() {
                 <div className='flex w-full items-start gap-2 text-sm'>
                     <div className='grid gap-2'>
                         <div className='flex items-center gap-2 font-medium leading-none'>
-                            Trending up by 5.2% this month{" "}
+                            Trending up by {((chartData[chartData.length - 1]?.attendance - chartData[chartData.length - 2]?.attendance) / chartData[chartData.length - 2]?.attendance ) * 100 || 0}% this month{" "}
                             <TrendingUp className='h-4 w-4' />
                         </div>
                         <div className='flex items-center gap-2 leading-none text-muted-foreground'>
-                            January - June 2024
+                            {getLastThreeMonths().join(" - ")}
                         </div>
                     </div>
                 </div>
