@@ -5,16 +5,40 @@ import DashboardLayout from "../pages/dashboard/home/DashboardLayout";
 import AdminDashboard from "../pages/dashboard/home/AdminDashboard";
 import ManageRecords from "../pages/dashboard/manageRecords/ManageRecords";
 import ManageDepartments from "../pages/dashboard/manageDepartments/ManageDepartments";
+import AddDepartment from "../pages/dashboard/manageDepartments/AddDepartment";
 import AdminRoute from "./AdminRoute";
+import Home from "../pages/Home/Home";
+import AttendanceForm from "../pages/MissionaryForce/AttendanceForm";
+import CheckInOut from "../pages/MissionaryForce/CheckInOut";
+import MFLayout from "../pages/MissionaryForce/MFLayout";
+import Vigil from "@/pages/Vigil/Vigil";
 
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
+        element: <Home />,
     },
     {
-        path: "/admin",
+        path: "/",
+        element: <MFLayout />,
+        children: [
+            {
+                path: "check-in-out",
+                element: <CheckInOut />
+            },
+            {
+                path: "attendance-form",
+                element: <AttendanceForm />
+            }  
+        ]
+    },
+    {
+        path: "/missionary-vigil",
+        element: <Vigil />,
+    },
+    {
+        path: "/auth/admin",
         element: <AdminLogin />,
     },
     {
@@ -31,7 +55,16 @@ const router = createBrowserRouter([
             },
             {
                 path: "manage-departments",
-                element: <AdminRoute> <ManageDepartments /> </AdminRoute>,
+                children: [
+                    {
+                        path: "",
+                        element: <AdminRoute> <ManageDepartments /> </AdminRoute>,
+                    },
+                    {
+                        path: "add-department",
+                        element: <AdminRoute> <AddDepartment /> </AdminRoute>,
+                    }
+                ]
             },
         ],
     },

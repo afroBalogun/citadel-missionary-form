@@ -9,7 +9,7 @@ export default function AdminRoute({ children }: AdminRouteProps) {
     const token = (localStorage.getItem('token'));
     
     if (!token) {
-        return <Navigate to="/admin" replace />;
+        return <Navigate to="/auth/admin" replace />;
     }
 
     return children ? children : <Outlet />;

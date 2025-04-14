@@ -2,10 +2,10 @@ const Attendance = require("./attendance.model");
 
 const postAttendance = async (req, res) => {
     try {
-        const { firstName, lastName, department } = req.body;
+        const { firstName, lastName, department, date, phoneNumber } = req.body;
 
         // Check if an attendance record already exists for the same person in the same department
-        const existingAttendance = await Attendance.findOne({ firstName, lastName, department });
+        const existingAttendance = await Attendance.findOne({ date, phoneNumber, department });
 
         if (existingAttendance) {
             return res.status(400).json({ message: "Attendance already recorded for this person in this department" });
@@ -35,19 +35,27 @@ const getAllAttendance = async (req, res) => {
 
 const getAttendanceByParameter = async (req, res) => {
     try {
-        // Extract parameters 
-        const { department, date, gender } = req.query;
+        const { name, department, date, gender } = req.query;
 
-        // Build a query object dynamically
         let query = {};
+
+        if (name) query.$text = { $search: name };
         if (department) query.department = department;
         if (date) query.date = date;
         if (gender) query.gender = gender;
 
-        // Fetch records from MongoDB
-        const attendanceRecords = await Attendance.find(query);
+        let attendanceRecords;
 
-        // Send response
+        if (name) {
+            attendanceRecords = await Attendance.find(query, {
+                score: { $meta: "textScore" }
+            }).sort({
+                score: { $meta: "textScore" }
+            });
+        } else {
+            attendanceRecords = await Attendance.find(query).sort({ createdAt: -1 });
+        }
+
         res.status(200).json({
             success: true,
             count: attendanceRecords.length,
@@ -62,6 +70,8 @@ const getAttendanceByParameter = async (req, res) => {
         });
     }
 };
+
+
 
 module.exports = {
     postAttendance,

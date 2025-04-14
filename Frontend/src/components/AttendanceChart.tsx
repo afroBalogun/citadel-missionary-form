@@ -1,0 +1,126 @@
+"use client";
+
+import { TrendingUp } from "lucide-react";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import {
+    ChartConfig,
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
+} from "@/components/ui/chart";
+import { useGetAttendanceQuery } from "@/redux/features/attendance/attendanceApi";
+import { format, subMonths, isAfter, parseISO } from "date-fns";
+
+// Helper to get last 3 months (including current month)
+const getLastThreeMonths = () => {
+    const now = new Date();
+    return [2, 1, 0].map((n) =>
+      format(subMonths(now, n), "MMMM") // e.g., "January"
+    );
+  };
+  
+  // Transform attendance records to chart data
+  const getAttendanceChartData = (records: any[]) => {
+    const lastThreeMonths = getLastThreeMonths();
+  
+    const initialData = lastThreeMonths.map((month) => ({
+      month,
+      attendance: 0,
+    }));
+  
+    records.forEach((record) => {
+      const recordDate = new Date(record.date);
+      const month = format(recordDate, "MMMM");
+  
+      if (lastThreeMonths.includes(month)) {
+        const entry = initialData.find((m) => m.month === month);
+        if (entry) entry.attendance += 1;
+      }
+    });
+  
+    return initialData;
+  };
+
+
+
+const chartConfig = {
+    desktop: {
+        label: "Desktop",
+        color: "hsl(var(--chart-1))",
+    },
+    mobile: {
+        label: "Mobile",
+        color: "hsl(var(--chart-2))",
+    },
+} satisfies ChartConfig;
+
+export default function AttendanceChart() {
+    const { data, error, isLoading } = useGetAttendanceQuery();
+
+    const chartData = Array.isArray(data) ? getAttendanceChartData(data) : [];
+
+    
+    return (
+        <Card className="w-full">
+            <CardHeader>
+                <CardTitle>Area Chart - Stacked</CardTitle>
+                <CardDescription>
+                    Showing total visitors for the last 3 months
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <ChartContainer config={chartConfig}>
+                    <AreaChart
+                        accessibilityLayer
+                        data={chartData}
+                        margin={{
+                            left: 12,
+                            right: 12,
+                        }}
+                    >
+                        <CartesianGrid vertical={false} />
+                        <XAxis
+                            dataKey='month'
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            tickFormatter={(value) => value.slice(0, 3)}
+                        />
+                        <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent indicator='dot' />}
+                        />
+                        <Area
+                          dataKey="attendance"
+                          type="monotone"
+                          fill="var(--color-desktop)"
+                          stroke="var(--color-desktop)"
+                        />
+                    </AreaChart>
+                </ChartContainer>
+            </CardContent>
+            <CardFooter>
+                <div className='flex w-full items-start gap-2 text-sm'>
+                    <div className='grid gap-2'>
+                        <div className='flex items-center gap-2 font-medium leading-none'>
+                            Trending up by 5.2% this month{" "}
+                            <TrendingUp className='h-4 w-4' />
+                        </div>
+                        <div className='flex items-center gap-2 leading-none text-muted-foreground'>
+                            January - June 2024
+                        </div>
+                    </div>
+                </div>
+            </CardFooter>
+        </Card>
+    );
+}

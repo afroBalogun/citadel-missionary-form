@@ -5,7 +5,7 @@ import { FaPlus, FaMinus  } from "react-icons/fa6";
 import { Attendance, useAddAttendanceMutation } from "../redux/features/attendance/attendanceApi";
 import Swal from "sweetalert2";
 import getDistanceFromLatLonInKm from "../utils/getDistanceFromLocation";
-import { useNavigate } from "react-router";
+import { useGetDepartmentsQuery } from "@/redux/features/department/departmentApi";
 
 interface FormProps {
     isLocationValid: boolean;
@@ -23,7 +23,7 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
     const [showAdditionalDepartments, setShowAdditionalDepartments] = useState<boolean>(false)
 
     // Defined useForm modules to handle form data submission
-    const { register, handleSubmit, formState: { errors } } = useForm<Attendance>();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<Attendance>();
 
     // Add Attendance to DB function
     const [addAttendance] = useAddAttendanceMutation();
@@ -47,33 +47,7 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
     }, []);
 
     // All Departments
-    const departments = [
-        "Engineering",
-        "Guest Relations",
-        "Treasury",
-        "Legal",
-        "Technology group",
-        "Multimedia",
-        "Security",
-        "ATS Trainers",
-        "Protocol",
-        "Prayer and Counselling",
-        "Beautification",
-        "Prison Ministries",
-        "Drama",
-        "Family Frendly Children Ministry",
-        "New Dawn Choir",
-        "Medical Missions",
-        "Teens Teachers",
-        "Hospitality",
-        "Armor Bearers",
-        "Family Life Center",
-        "Publication",
-        "M.E.R.I.T.T",
-        "Economic Empowerment"
-    ];
-
-    const navigate = useNavigate();
+    const {data:departments} = useGetDepartmentsQuery()
     
     // Submit Form
     const onSubmit = async (data: Attendance) => {
@@ -81,9 +55,7 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
             ...data,
             department: selectedDepartments, 
         };
-    
-        console.log(formDataWithAdditional);
-    
+        
         try {
             await addAttendance(formDataWithAdditional).unwrap();
             
@@ -93,10 +65,12 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
             Swal.fire({
                 title: `${formattedFirstName}, your attendance has been recorded!`,
                 icon: "success",
-                draggable: false
+                draggable: false,
+            }).then(() => {
+                // Refresh the page after user closes the success alert
+                // window.location.reload();
+                reset()
             });
-            navigate("/")
-    
         } catch (error: any) {
             console.error("Error submitting attendance:", error);
     
@@ -184,27 +158,39 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
                             
                         </div>
                         <div className={`${showAdditionalDepartments ? "" : ""}bg-gray-100 p-4 rounded-2xl hover:cursor-`}>
-                            {departments.sort().map((department) => (
-                                <div key={department} className={`${showAdditionalDepartments ? "" : "hidden"} flex gap-2 items-center`}>
-                                    <input 
-                                        type="checkbox" 
-                                        id={department} 
-                                        value={department}
-                                        checked={selectedDepartments.includes(department)}
-                                        onChange={(e) => {
-                                            const value = e.target.value;
-                                            setSelectedDepartments(prev =>
-                                                prev.includes(value)
-                                                    ? prev.filter((dep) => dep !== value) // Remove if unchecked
-                                                    : [...prev, value] // Add if checked
-                                            );
-                                        }}
-                                    />
-                                    <label htmlFor={department} className="capitalize">{department}</label>
-                                </div>
-                            ))}
+                        {Array.isArray(departments) && [...departments]
+                          .sort()
+                          .map((department) => (
+                            <div key={department._id} className={`${showAdditionalDepartments ? "" : "hidden"} flex gap-2 items-center`}>
+                              <input 
+                                type="checkbox" 
+                                id={department._id} 
+                                value={department.departmentName}
+                                checked={selectedDepartments.includes(department.departmentName)}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  setSelectedDepartments(prev =>
+                                    prev.includes(value)
+                                      ? prev.filter((dep) => dep !== value)
+                                      : [...prev, value]
+                                  );
+                                }}
+                              />
+                              <label htmlFor={department} className="capitalize">{department.departmentName}</label>
+                            </div>
+                        ))}
                         </div>
                         
+                        {/* Phone Numbers */}
+                        <label htmlFor="phoneNumber" className="font-semibold">Phone Number</label>
+                        <input
+                            id="phoneNumber" 
+                            type="text" 
+                            placeholder="08012345678" 
+                            className="bg-gray-100 py-2 px-4 rounded-2xl outline-0 transition-all duration-200"
+                            {...register("phoneNumber", { required: true })}
+                        />
+                        {errors.phoneNumber && <span className="text-red-500">Phone number is required</span>}
 
                         <div className="flex flex-col gap-4 md:flex-row">
                             {/* Date */}
@@ -257,9 +243,9 @@ const Form: React.FC<FormProps> = ({ isLocationValid, setIsLocationValid }) => {
                         <button type="submit" className="bg-[#DCA628] p-3 text-white rounded-3xl mt-4 hover:cursor-pointer hover:scale-110 font-semibold transition-all duration-200">Submit</button>
                     </form>
                 ) : (
-                    <div className="mt-20 flex items-center flex-col justify-center gap-2 max-h-screen">
+                    <div className="mt-20 flex items-center flex-col justify-center gap-2 flex-grow">
                         <FaLocationDot className="location-icon text-3xl"/>
-                        <p className="text-sm w-[250px] text-center md:text-lg md:w-[300px]">
+                        <p className="text-sm w-[250px] text-center md:text-lg md:w-[300px] text-gray-700 font-semibold">
                             You are not at the required location to fill out this form.
                         </p>
                     </div>

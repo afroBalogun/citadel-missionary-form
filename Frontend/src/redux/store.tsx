@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import attendanceApi from './features/attendance/attendanceApi';
 import adminApi from './features/admin/adminApi';
-import departmentApi from './features/departmentApi/departmentApi';
+import departmentApi from './features/department/departmentApi';
 
 const store = configureStore({
     reducer: {

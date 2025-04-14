@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 // firstname, Lastname, departent, additional departments, date, gender
-
+ 
 const AttendanceSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -14,6 +14,10 @@ const AttendanceSchema = new mongoose.Schema({
     department: {
         type: [String], 
         default: [],
+        required: true
+    },
+    phoneNumber: {
+        type: Number,
         required: true
     },
     date: {
@@ -33,6 +37,11 @@ const AttendanceSchema = new mongoose.Schema({
     timestamps: true,
 });
 
+AttendanceSchema.index({
+    firstName: "text",
+    lastName: "text"
+  });
+  
 const Attendance = mongoose.model('Attendance', AttendanceSchema);
 
 module.exports = Attendance;

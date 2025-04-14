@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import getBaseUrl from '../../../utils/baseURL';
+import { JSX } from 'react/jsx-runtime';
 
 // Define attendance data structure
 export interface Attendance {
@@ -9,12 +10,16 @@ export interface Attendance {
     department: string[];
     date: string;
     gender: 'male' | 'female';
+    phoneNumber: string;
 }
 
 // Define API responses
 export interface AttendanceResponse {
     data: Attendance[];
+    success?: boolean;
+    count?: number;
 }
+
 
 // Base query setup
 const baseQuery = fetchBaseQuery({
@@ -32,12 +37,13 @@ const attendanceApi = createApi({
             query: () => '/',
             providesTags: ['Attendance'],
         }),
-        getAttendanceByParameter: builder.query<AttendanceResponse, { department?: string; date?: string; gender?: string }>({
-            query: ({ department, date, gender }) => {
+        getAttendanceByParameter: builder.query<AttendanceResponse, { department?: string; date?: string; gender?: string; name?:string}>({
+            query: ({ department, date, gender, name }) => {
                 const params = new URLSearchParams();
                 if (department) params.append('department', department);
                 if (date) params.append('date', date);
                 if (gender) params.append('gender', gender);
+                if(name) params.append('name', name);
                 return `/find-attendance?${params.toString()}`;
             },
             providesTags: ['Attendance'],
