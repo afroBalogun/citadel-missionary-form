@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import getBaseUrl from '../../../utils/baseURL';
-import { JSX } from 'react/jsx-runtime';
 
 // Define attendance data structure
 export interface Attendance {

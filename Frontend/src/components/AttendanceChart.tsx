@@ -18,7 +18,7 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useGetAttendanceQuery } from "@/redux/features/attendance/attendanceApi";
-import { format, subMonths, isAfter, parseISO } from "date-fns";
+import { format, subMonths} from "date-fns";
 
 // Helper to get last 3 months (including current month)
 const getLastThreeMonths = () => {
@@ -64,7 +64,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function AttendanceChart() {
-    const { data, error, isLoading } = useGetAttendanceQuery();
+    const { data} = useGetAttendanceQuery();
 
     const chartData = Array.isArray(data) ? getAttendanceChartData(data) : [];
 
