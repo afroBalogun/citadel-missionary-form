@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router";
-import App from "../App";
 import AdminLogin from "../components/AdminLogin";
 import DashboardLayout from "../pages/dashboard/home/DashboardLayout";
 import AdminDashboard from "../pages/dashboard/home/AdminDashboard";
