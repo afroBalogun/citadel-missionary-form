@@ -84,7 +84,7 @@ export default function ManageRecords() {
                     title='Departments'
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
-                    className='p-3 px-4 bg-gray-100 border-2 border-gray-200 text-gray-600 rounded-4xl w-[200px] text-sm hover:border-[#24467c] transition-all duration-200'
+                    className='p-3  bg-gray-100 border-2 border-gray-200 text-gray-600 rounded-4xl w-[200px] text-sm hover:border-[#24467c] transition-all duration-200'
                 >
                     <option value=''>Select Department</option>
                     {availableDepartments}
@@ -95,7 +95,7 @@ export default function ManageRecords() {
                     title='Select a date'
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className='p-3 px-4 bg-gray-100 text-gray-600 rounded-4xl w-[150px] text-sm border-2 border-gray-200 hover:border-[#24467c] transition-all duration-200'
+                    className='p-3 bg-gray-100 text-gray-600 rounded-4xl w-[150px] text-sm border-2 border-gray-200 hover:border-[#24467c] transition-all duration-200'
                 />
             </div>
 
