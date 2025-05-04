@@ -10,6 +10,7 @@ export interface Attendance {
     date: string;
     gender: 'male' | 'female';
     phoneNumber: string;
+    createdAt: string
 }
 
 // Define API responses

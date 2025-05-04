@@ -32,7 +32,7 @@ export default function AdminLogin(){
                 title: "Oops...",
                 text: "Invalid login details!",
               });
-              navigate("/admin");
+              navigate("/auth/admin");
         }
     };
 
