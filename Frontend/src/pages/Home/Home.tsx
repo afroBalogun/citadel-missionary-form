@@ -41,7 +41,7 @@ export default function Home(){
                             Manage your attendance records for the Missionary Force and Vigil.
                         </p>
                         <Link to="/check-in-out" className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-100">Missionary Force Attendance</Link>
-                        <Link to="/missionary-vigil" className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-100">Missionary Vigil</Link>
+                        {/* <Link to="/missionary-vigil" className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-100">Missionary Vigil</Link> */}
                     </div>
                 </section>
             </main>
